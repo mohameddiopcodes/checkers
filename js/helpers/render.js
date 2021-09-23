@@ -1,11 +1,12 @@
 const renderCells = require('./renderCells')
 const animateBoard = require('./animateBoard')
+const { cells } = require('../vars/vars')
 
-const render = (flatBoard, e = false, cells, cellId, highLighted, message) => {
-    if(!e) {
-        renderCells(cells, flatBoard)
+const render = (e = false) => {
+    if(e) {
+        animateBoard(e)
     } else {
-        animateBoard(e, highLighted, message)
+        renderCells(cells)
     }
 };
 

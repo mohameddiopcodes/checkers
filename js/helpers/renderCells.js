@@ -1,4 +1,6 @@
-const renderCells = function(cells, flatBoard) {
+const { flatBoard } = require('../vars/vars')
+
+const renderCells = function(cells) {
     cells.forEach((cell, cellId) => {
         if(flatBoard[cellId] === 1) {
             cell.childNodes[0].style.visibility = 'visible'
