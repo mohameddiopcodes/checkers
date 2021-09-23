@@ -1,14 +1,86 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400&display=swap');
 
-* {
-    box-sizing: border-box;
-}
-
 body {
-    margin: 7vmin 0;
+    margin: 3vmin 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    margin-bottom: 3vmin;
+}
+
+.row {
+    display: flex;
+}
+
+.row > div {
+    width: 8vmin;
+    height: 8vmin;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+div img {
+    width: 90%;
+    height: 90%;
+    visibility: hidden;
+}
+
+.highlight {
+    animation-duration: .5s;
+    animation-name: bounce;
+    animation-iteration-count: infinite;
+}
+
+@keyframes bounce {
+    from {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.2);
+    }
+
+    to {
+        transform: scale(1)
+    }
+}
+
+.row > div:nth-child(0n + 1) {
+    border-left: .7em solid rgb(88, 56, 13);
+}
+
+.row > div:nth-child(0n + 10) {
+    border-right: .7em solid rgb(88, 56, 13);
+}
+
+.first-row {
+    border-top: .7em solid rgb(88, 56, 13);
+}
+
+.last-row {
+    border-bottom: .7em solid rgb(88, 56, 13)
+}
+
+.row:nth-child(2n+1) > div:nth-child(2n) {
+    background: black;
+    background: url('images/leather.jpeg');
+}
+
+.row:nth-child(2n) > div:nth-child(2n+1) {
+    background: url('images/leather.jpeg');
+}
+
+.row:nth-child(2n) > div:nth-child(2n) {
+    background: black;
+    background: url('images/walltexture.jpeg');
+}
+
+.row:nth-child(2n+1) > div:nth-child(2n+1) {
+    background: url('images/walltexture.jpeg');
 }
