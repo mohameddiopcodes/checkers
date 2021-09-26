@@ -1,4 +1,6 @@
 const isChip = require('./isChip')
+const updateBoard = require('./updateBoard')
+const move = require('./move')
 const {highLighted, message} = require('../vars/vars')
 
 const animateBoard = function(e) {
@@ -9,25 +11,21 @@ const animateBoard = function(e) {
         highLighted.player = !highLighted.player
         highLighted.playerHighLights.push(e.target)
 
-    } else if (!highLighted.cell && !isChip(e) && !highLighted.cellHighLights.length) {
+    } else if (highLighted.player && !highLighted.cell && !isChip(e) && !highLighted.cellHighLights.length) {
 
         message.textContent = 'Make a move'
-        e.target.setAttribute('class', 'highlight')
         highLighted.cell = !highLighted.cell
         highLighted.cellHighLights.push(e.target)
+        move(highLighted.playerHighLights, highLighted.cellHighLights)
+        updateBoard(highLighted.playerHighLights, highLighted.cellHighLights)
 
-    } else if (highLighted.player && isChip(e) && highLighted.playerHighLights[0] === e.target) {
-
-        e.target.classList.remove('highlight')
+        highLighted.playerHighLights[0].classList.remove('highlight')
         highLighted.player = !highLighted.player
         highLighted.playerHighLights.pop()
 
-    } else if (highLighted.cell && !isChip(e)  && highLighted.cellHighLights[0] === e.target) {
-
-        e.target.classList.remove('highlight')
         highLighted.cell = !highLighted.cell
         highLighted.cellHighLights.pop()
-        
+
     }
 }
 

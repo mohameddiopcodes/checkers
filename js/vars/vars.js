@@ -30,7 +30,24 @@ const highLighted = {
 //DOM Elements
 const message = document.querySelector('h1')
 const cells = document.querySelectorAll('.row > .cell')
-const playableCells = [...document.querySelectorAll('.row:nth-child(2n+1) > div:nth-child(2n)'), ...document.querySelectorAll('.row:nth-child(2n) > div:nth-child(2n+1)')]
+const evenPlayableCells = [...document.querySelectorAll('.row:nth-child(even) > div:nth-child(odd)')]
+const oddPlayableCells = [...document.querySelectorAll('.row:nth-child(odd) > div:nth-child(even)')]
+const playableCells = [];
+
+let i = 1
+
+while(i < 22) {
+    const cellIdArray = [i-1, i, i+1, i+2, i+3]
+
+    cellIdArray.forEach(id => {
+        playableCells.push(oddPlayableCells[id])
+    })
+    cellIdArray.forEach(id => {
+        playableCells.push(evenPlayableCells[id])
+    })
+
+    i+=5  
+}
 
 module.exports = {
     chipLookup,
@@ -41,5 +58,7 @@ module.exports = {
     highLighted,
     message,
     cells,
-    playableCells
+    playableCells,
+    evenPlayableCells,
+    oddPlayableCells
 }

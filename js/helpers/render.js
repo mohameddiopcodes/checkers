@@ -1,8 +1,8 @@
 const renderCells = require('./renderCells')
 const animateBoard = require('./animateBoard')
-const { cells } = require('../vars/vars')
+const { cells, evenPlayableCells, oddPlayableCells } = require('../vars/vars')
 
-const render = (e = false) => {
+const render = (e = false, cellId) => {
     if(e) {
         animateBoard(e)
     } else {
