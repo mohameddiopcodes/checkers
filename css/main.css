@@ -29,6 +29,7 @@ div img {
     width: 90%;
     height: 90%;
     visibility: hidden;
+    transition: visibility .01s ease-in-out
 }
 
 .highlight {

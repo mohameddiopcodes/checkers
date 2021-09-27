@@ -15,7 +15,7 @@
   \************************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const isChip = __webpack_require__(/*! ./isChip */ \"./js/helpers/isChip.js\")\nconst updateBoard = __webpack_require__(/*! ./updateBoard */ \"./js/helpers/updateBoard.js\")\nconst move = __webpack_require__(/*! ./move */ \"./js/helpers/move.js\")\nconst {highLighted, message} = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst animateBoard = function(e) {\n    if(!highLighted.player && isChip(e) && !highLighted.playerHighLights.length) {\n\n        message.textContent = 'Make a move'\n        e.target.setAttribute('class', 'highlight')\n        highLighted.player = !highLighted.player\n        highLighted.playerHighLights.push(e.target)\n\n    } else if (highLighted.player && !highLighted.cell && !isChip(e) && !highLighted.cellHighLights.length) {\n\n        message.textContent = 'Make a move'\n        highLighted.cell = !highLighted.cell\n        highLighted.cellHighLights.push(e.target)\n        move(highLighted.playerHighLights, highLighted.cellHighLights)\n        updateBoard(highLighted.playerHighLights, highLighted.cellHighLights)\n\n        highLighted.playerHighLights[0].classList.remove('highlight')\n        highLighted.player = !highLighted.player\n        highLighted.playerHighLights.pop()\n\n        highLighted.cell = !highLighted.cell\n        highLighted.cellHighLights.pop()\n\n    }\n}\n\nmodule.exports = animateBoard\n\n//# sourceURL=webpack:///./js/helpers/animateBoard.js?");
+eval("const isChip = __webpack_require__(/*! ./isChip */ \"./js/helpers/isChip.js\")\nconst updateBoard = __webpack_require__(/*! ./updateBoard */ \"./js/helpers/updateBoard.js\")\nconst move = __webpack_require__(/*! ./move */ \"./js/helpers/move.js\")\nlet {highLighted, message, turn} = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\nconst isWhitePiece = __webpack_require__(/*! ./isWhitePiece */ \"./js/helpers/isWhitePiece.js\")\nconst moveUtility = __webpack_require__(/*! ./moveUtility */ \"./js/helpers/moveUtility.js\")\n\nconst animateBoard = function(e) {\n    if(turn === 1 && !highLighted.player && isChip(e) && isWhitePiece(e.target) && !highLighted.playerHighLights.length) {\n\n        moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})\n    \n    } else if(turn === -1 && !highLighted.player && isChip(e) && !isWhitePiece(e.target) && !highLighted.playerHighLights.length) {\n\n        moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})\n    \n    } else if (highLighted.player && !highLighted.cell && !isChip(e) && !highLighted.cellHighLights.length) {\n\n        moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', flipCell: true, pushCell: true})\n\n        const moved = move(highLighted.playerHighLights, highLighted.cellHighLights, turn)\n        turn *= -1\n        if(!moved) {\n            message.textContent = \"Sorry, can't move there\"\n        } else {\n            if(typeof moved === 'number') {\n                turn = updateBoard(turn, highLighted.playerHighLights, highLighted.cellHighLights, moved)\n                moveUtility({message, turn}, {toggleTurn: true})\n            } else {\n                moveUtility({message, turn}, {toggleTurn: true})\n                updateBoard(turn, highLighted.playerHighLights, highLighted.cellHighLights)\n            }\n        }\n\n        moveUtility({e, highLighted, message}, {removeHighlight: true, flipPlayer: true, popPlayer: true})\n\n        moveUtility({e, highLighted, message}, {flipCell: true, popCell: true})\n        \n    } else if (highLighted.player && e.target === highLighted.playerHighLights[0]) {\n\n        moveUtility({e, highLighted, message, turn}, {toggleTurn: true, removeHighlight: true, flipPlayer: true, popPlayer: true})\n\n    }\n}\n\nmodule.exports = animateBoard\n\n//# sourceURL=webpack:///./js/helpers/animateBoard.js?");
 
 /***/ }),
 
@@ -39,13 +39,63 @@ eval("const isChip = function(e) {\n    if(e.target.children[0]) {\n        retu
 
 /***/ }),
 
+/***/ "./js/helpers/isWhitePiece.js":
+/*!************************************!*\
+  !*** ./js/helpers/isWhitePiece.js ***!
+  \************************************/
+/***/ ((module) => {
+
+eval("const isWhitePiece = img => img.src && img.src.split('').includes('w') ? true:false\n\nmodule.exports = isWhitePiece\n\n//# sourceURL=webpack:///./js/helpers/isWhitePiece.js?");
+
+/***/ }),
+
+/***/ "./js/helpers/makeKing.js":
+/*!********************************!*\
+  !*** ./js/helpers/makeKing.js ***!
+  \********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("const isWhitePiece = __webpack_require__(/*! ./isWhitePiece */ \"./js/helpers/isWhitePiece.js\")\n\nconst makeKing = (e) => {\n    if(e) {\n        const firstRow = document.querySelector('.first-row')\n        const lastRow = document.querySelector('.last-row')\n\n        if([...lastRow.childNodes].includes(e.target) && isWhitePiece(e.target.childNodes[0])) {\n            e.target.childNodes[0].src = './css/images/whiteKing.PNG'\n        } else if([...firstRow.childNodes].includes(e.target) && !isWhitePiece(e.target.childNodes[0])) {\n            e.target.childNodes[0].src = './css/images/blackKing.PNG'\n        }\n    }\n}\n\nmodule.exports = makeKing\n\n//# sourceURL=webpack:///./js/helpers/makeKing.js?");
+
+/***/ }),
+
+/***/ "./js/helpers/manPlayLogic.js":
+/*!************************************!*\
+  !*** ./js/helpers/manPlayLogic.js ***!
+  \************************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("const { board, cells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\nconst movePiece = __webpack_require__(/*! ./movePiece */ \"./js/helpers/movePiece.js\")\n\n\nconst manPlayLogic = (cellsArr, cell, player, turn) => {\n    let i = 0\n    let j = 0\n    while(j < cellsArr.length) {\n        const p = j-10\n        const n = j+10\n        const arr = [cellsArr[j], cellsArr[j+1], cellsArr[j+2], cellsArr[j+3], cellsArr[j+4], cellsArr[j+5], cellsArr[j+6], cellsArr[j+7], cellsArr[j+8], cellsArr[j+9]]\n        const prevArr = [cellsArr[p], cellsArr[p+1], cellsArr[p+2], cellsArr[p+3], cellsArr[p+4], cellsArr[p+5], cellsArr[p+6], cellsArr[p+7], cellsArr[p+8], cellsArr[p+9]]\n        const nextArr = [cellsArr[n], cellsArr[n+1], cellsArr[n+2], cellsArr[n+3], cellsArr[n+4], cellsArr[n+5], cellsArr[n+6], cellsArr[n+7], cellsArr[n+8], cellsArr[n+9]]\n\n        if(nextArr.indexOf(cell[0]) > -1 || prevArr.indexOf(cell[0]) > -1) {\n            const isPlayableCell = nextArr.includes(cell[0]) ? ((nextArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (nextArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement)) : ((prevArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (prevArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement))\n            if(arr.includes(player[0].parentElement) && isPlayableCell) {\n                movePiece(player, cell)\n                return isPlayableCell\n            }\n        } else {\n            const p2 = j-20\n            const n2 = j+20\n            const prevArr2 = [cellsArr[p2], cellsArr[p2+1], cellsArr[p2+2], cellsArr[p2+3], cellsArr[p2+4], cellsArr[p2+5], cellsArr[p2+6], cellsArr[p2+7], cellsArr[p2+8], cellsArr[p2+9]]\n            const nextArr2 = [cellsArr[n2], cellsArr[n2+1], cellsArr[n2+2], cellsArr[n2+3], cellsArr[n2+4], cellsArr[n2+5], cellsArr[n2+6], cellsArr[n2+7], cellsArr[n2+8], cellsArr[n2+9]]\n\n            const isPlayableCell = nextArr2.includes(cell[0]) ? ((nextArr2.indexOf(cell[0])+2)%10 === arr.indexOf(player[0].parentElement) || (nextArr2.indexOf(cell[0])-2)%10 === arr.indexOf(player[0].parentElement)) : ((prevArr2.indexOf(cell[0])+2)%10 === arr.indexOf(player[0].parentElement) || (prevArr2.indexOf(cell[0])-2)%10 === arr.indexOf(player[0].parentElement))\n            if(nextArr2.indexOf(cell[0]) > -1 || prevArr2.indexOf(cell[0]) > -1) {\n                if(arr.includes(player[0].parentElement) && isPlayableCell) {\n                    \n                    console.log(i-1, arr.indexOf(player[0].parentElement)-1, arr.indexOf(player[0].parentElement)+1, i,  i+1)\n                    if(i != 9 && board[i+1][arr.indexOf(player[0].parentElement)+1] === -1*turn && (nextArr2[arr.indexOf(player[0].parentElement)+2] === cell[0])) {\n                        const capturedPieceId = parseInt((i+1).toString() + (arr.indexOf(player[0].parentElement)+1).toString())\n                        cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'\n                        movePiece(player, cell)\n                        return capturedPieceId\n\n                    } else if (i != 9 && board[i+1][arr.indexOf(player[0].parentElement)-1] === -1*turn && (nextArr2[arr.indexOf(player[0].parentElement)-2] === cell[0])) {\n                        const capturedPieceId = parseInt((i+1).toString() + (arr.indexOf(player[0].parentElement)-1).toString())\n                        cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'\n                        movePiece(player, cell)\n                        return capturedPieceId\n\n                    } else if (i != 0 && board[i-1][arr.indexOf(player[0].parentElement)+1] === -1*turn && (prevArr2[arr.indexOf(player[0].parentElement)+2] === cell[0])) {\n                        const capturedPieceId = parseInt((i-1).toString() + (arr.indexOf(player[0].parentElement)+1).toString())\n                        cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'\n                        movePiece(player, cell)\n                        return capturedPieceId\n\n                    }  else if (i != 0 && board[i-1][arr.indexOf(player[0].parentElement)-1] === -1*turn && (prevArr2[arr.indexOf(player[0].parentElement)-2] === cell[0])) {\n                        const capturedPieceId = parseInt((i-1).toString() + (arr.indexOf(player[0].parentElement)-1).toString())\n                        cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'\n                        movePiece(player, cell)\n                        return capturedPieceId\n\n                    }\n                }\n            }\n        }\n\n        i += 1\n        j += 10\n    }\n}\n\nmodule.exports = manPlayLogic\n\n//# sourceURL=webpack:///./js/helpers/manPlayLogic.js?");
+
+/***/ }),
+
 /***/ "./js/helpers/move.js":
 /*!****************************!*\
   !*** ./js/helpers/move.js ***!
   \****************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const { board, flatBoard, cells, playableCells, evenPlayableCells, oddPlayableCells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst move = (player, cell) => {\n    const cellsArr = [...cells]\n    if(evenPlayableCells.includes(player[0].parentElement)) {\n        console.log(flatBoard[cellsArr.indexOf(player[0].parentElement)])\n    } else if(oddPlayableCells.includes(player[0].parentElement)) {\n        console.log(flatBoard[cellsArr.indexOf(player[0].parentElement)])\n    }\n    player[0].style.visibility = 'hidden'\n    cell[0].childNodes[0].src = player[0].src\n    cell[0].childNodes[0].style.visibility = 'visible'\n}\n\nmodule.exports = move\n\n//# sourceURL=webpack:///./js/helpers/move.js?");
+eval("const { cells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\nconst manPlayLogic = __webpack_require__(/*! ./manPlayLogic */ \"./js/helpers/manPlayLogic.js\")\n\nconst move = (player, cell, turn) => {\n    const cellsArr = [...cells]\n    return manPlayLogic(cellsArr, cell, player, turn)\n}\n\nmodule.exports = move\n\n//# sourceURL=webpack:///./js/helpers/move.js?");
+
+/***/ }),
+
+/***/ "./js/helpers/movePiece.js":
+/*!*********************************!*\
+  !*** ./js/helpers/movePiece.js ***!
+  \*********************************/
+/***/ ((module) => {
+
+eval("const movePiece = (player, cell) => {\n    player[0].style.visibility = 'hidden'\n    cell[0].childNodes[0].src = player[0].src\n    cell[0].childNodes[0].style.visibility = 'visible'\n}\n\nmodule.exports = movePiece\n\n//# sourceURL=webpack:///./js/helpers/movePiece.js?");
+
+/***/ }),
+
+/***/ "./js/helpers/moveUtility.js":
+/*!***********************************!*\
+  !*** ./js/helpers/moveUtility.js ***!
+  \***********************************/
+/***/ ((module) => {
+
+eval("const moveUtility = ({e, highLighted, turn, message}, {displayMessage, toggleTurn, setHighlight, removeHighlight, flipPlayer, flipCell, flipTurn, pushPlayer, popPlayer, pushCell, popCell}) => {\n    if(displayMessage) {\n        message.textContent = displayMessage\n    }\n    if(toggleTurn) {\n        message.textContent = turn === 1 ? \"White's Turn\": \"Black's Turn\"\n    }\n    if(flipPlayer) {\n        highLighted.player = !highLighted.player\n    } \n    if(flipCell) {\n        highLighted.cell = !highLighted.cell\n    }\n   if(setHighlight) {\n        e.target.setAttribute('class', 'highlight')\n   }\n   if(removeHighlight) {\n        highLighted.playerHighLights[0].classList.remove('highlight')\n   }\n   if(pushPlayer) {\n        highLighted.playerHighLights.push(e.target)\n   }\n   if(popPlayer) {\n        highLighted.playerHighLights.pop()\n   }\n   if(pushCell) {\n        highLighted.cellHighLights.push(e.target)\n   }\n   if(popCell) {\n        highLighted.cellHighLights.pop()\n   }\n}\n\nmodule.exports = moveUtility\n\n//# sourceURL=webpack:///./js/helpers/moveUtility.js?");
 
 /***/ }),
 
@@ -55,7 +105,7 @@ eval("const { board, flatBoard, cells, playableCells, evenPlayableCells, oddPlay
   \******************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const renderCells = __webpack_require__(/*! ./renderCells */ \"./js/helpers/renderCells.js\")\nconst animateBoard = __webpack_require__(/*! ./animateBoard */ \"./js/helpers/animateBoard.js\")\nconst { cells, evenPlayableCells, oddPlayableCells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst render = (e = false, cellId) => {\n    if(e) {\n        animateBoard(e)\n    } else {\n        renderCells(cells)\n    }\n};\n\nmodule.exports = render\n\n//# sourceURL=webpack:///./js/helpers/render.js?");
+eval("const renderCells = __webpack_require__(/*! ./renderCells */ \"./js/helpers/renderCells.js\")\nconst animateBoard = __webpack_require__(/*! ./animateBoard */ \"./js/helpers/animateBoard.js\")\nconst makeKing = __webpack_require__(/*! ./makeKing */ \"./js/helpers/makeKing.js\")\nconst { cells, evenPlayableCells, oddPlayableCells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst render = (e = false, cellId) => {\n    if(e) {\n        animateBoard(e)\n        makeKing(e)\n    } else {\n        renderCells(cells)\n    }\n};\n\nmodule.exports = render\n\n//# sourceURL=webpack:///./js/helpers/render.js?");
 
 /***/ }),
 
@@ -69,13 +119,23 @@ eval("const { flatBoard } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/
 
 /***/ }),
 
+/***/ "./js/helpers/someToEat.js":
+/*!*********************************!*\
+  !*** ./js/helpers/someToEat.js ***!
+  \*********************************/
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+eval("const { board, cells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst someToEat = (cellsArr, flatBoard, player) => {\n    let found = false\n    const targetCells = [cellsArr[cellsArr.indexOf(player[0]) + 22], cellsArr[cellsArr.indexOf(player[0]) + 18], cellsArr[cellsArr.indexOf(player[0]) - 22], cellsArr[cellsArr.indexOf(player[0]) - 18]]\n    const targetPieces = [cellsArr[cellsArr.indexOf(player[0]) + 11], cellsArr[cellsArr.indexOf(player[0]) + 9], cellsArr[cellsArr.indexOf(player[0]) - 11], cellsArr[cellsArr.indexOf(player[0]) - 9]]\n    targetPieces.forEach((target, id) => {\n        switch(id) {\n            case 0:\n                if(flatBoard[(cellsArr.indexOf(player[0])+11)] != 0) {\n                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[0])] === 0 && flatBoard[cellsArr.indexOf(targetCells[0])] != -1) {\n                        found = true\n                    }\n                }\n                break;\n            case 1:\n                if(flatBoard[(cellsArr.indexOf(player[0])+9)] != 0) {\n                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[1])] === 0 && flatBoard[cellsArr.indexOf(targetCells[1])] != -1) {\n                        found = true\n                    }\n                }\n                break;\n            case 2:\n                if(flatBoard[(cellsArr.indexOf(player[0])-11)] != 0) {\n                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[2])] === 0&& flatBoard[cellsArr.indexOf(targetCells[2])] != -1) {\n                        found = true\n                    }\n                }\n                break;\n            case 3:\n                if(flatBoard[(cellsArr.indexOf(player[0])-9)] != 0) {\n                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[3])] === 0 && flatBoard[cellsArr.indexOf(targetCells[3])]  != -1) {\n                        found = true\n                    }\n                }\n                break;\n        }\n    })\n    return found\n}\n\nmodule.exports = someToEat\n\n//# sourceURL=webpack:///./js/helpers/someToEat.js?");
+
+/***/ }),
+
 /***/ "./js/helpers/updateBoard.js":
 /*!***********************************!*\
   !*** ./js/helpers/updateBoard.js ***!
   \***********************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const {cells, board, flatBoard} = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst updateBoard = (player, cell) => {\n    const cellsArr = [...cells]\n    flatBoard[cellsArr.indexOf(cell[0])] = flatBoard[cellsArr.indexOf(player[0].parentElement)]\n    flatBoard[cellsArr.indexOf(player[0].parentElement)] = 0\n    let i = 0\n    let j = 0\n    while(j < flatBoard.length) {\n        const arr = [flatBoard[j], flatBoard[j+1], flatBoard[j+2], flatBoard[j+3], flatBoard[j+4], flatBoard[j+5], flatBoard[j+6], flatBoard[j+7], flatBoard[j+8], flatBoard[j+9]]\n        board[i] = arr\n        i += 1\n        j += 10\n    }\n}\n\nmodule.exports = updateBoard\n\n//# sourceURL=webpack:///./js/helpers/updateBoard.js?");
+eval("const {message, cells, board, flatBoard} = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\nconst someToEat = __webpack_require__(/*! ./someToEat */ \"./js/helpers/someToEat.js\")\n\nconst updateBoard = (turn, player, cell, moved = false) => {\n    const cellsArr = [...cells]\n    const cellsBoard = []\n    flatBoard[cellsArr.indexOf(cell[0])] = flatBoard[cellsArr.indexOf(player[0].parentElement)]\n    flatBoard[cellsArr.indexOf(player[0].parentElement)] = 0\n    if(moved) {\n        flatBoard[moved] = 0\n    }\n    let i = 0\n    let j = 0\n    while(j < flatBoard.length) {\n        const arr = [flatBoard[j], flatBoard[j+1], flatBoard[j+2], flatBoard[j+3], flatBoard[j+4], flatBoard[j+5], flatBoard[j+6], flatBoard[j+7], flatBoard[j+8], flatBoard[j+9]]\n        cellsBoard[i] = [cellsArr[j], cellsArr[j+1], cellsArr[j+2], cellsArr[j+3], cellsArr[j+4], cellsArr[j+5], cellsArr[j+6], cellsArr[j+7], cellsArr[j+8], cellsArr[j+9]]\n        board[i] = arr\n        i += 1\n        j += 10\n    }\n\n    if(someToEat(cellsArr, flatBoard, cell, turn)) {\n        turn *= -1\n    }\n    return turn\n}\n\nmodule.exports = updateBoard\n\n//# sourceURL=webpack:///./js/helpers/updateBoard.js?");
 
 /***/ }),
 

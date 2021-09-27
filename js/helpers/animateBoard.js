@@ -1,30 +1,44 @@
 const isChip = require('./isChip')
 const updateBoard = require('./updateBoard')
 const move = require('./move')
-const {highLighted, message} = require('../vars/vars')
+let {highLighted, message, turn} = require('../vars/vars')
+const isWhitePiece = require('./isWhitePiece')
+const moveUtility = require('./moveUtility')
 
 const animateBoard = function(e) {
-    if(!highLighted.player && isChip(e) && !highLighted.playerHighLights.length) {
+    if(turn === 1 && !highLighted.player && isChip(e) && isWhitePiece(e.target) && !highLighted.playerHighLights.length) {
 
-        message.textContent = 'Make a move'
-        e.target.setAttribute('class', 'highlight')
-        highLighted.player = !highLighted.player
-        highLighted.playerHighLights.push(e.target)
+        moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})
+    
+    } else if(turn === -1 && !highLighted.player && isChip(e) && !isWhitePiece(e.target) && !highLighted.playerHighLights.length) {
 
+        moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})
+    
     } else if (highLighted.player && !highLighted.cell && !isChip(e) && !highLighted.cellHighLights.length) {
 
-        message.textContent = 'Make a move'
-        highLighted.cell = !highLighted.cell
-        highLighted.cellHighLights.push(e.target)
-        move(highLighted.playerHighLights, highLighted.cellHighLights)
-        updateBoard(highLighted.playerHighLights, highLighted.cellHighLights)
+        moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', flipCell: true, pushCell: true})
 
-        highLighted.playerHighLights[0].classList.remove('highlight')
-        highLighted.player = !highLighted.player
-        highLighted.playerHighLights.pop()
+        const moved = move(highLighted.playerHighLights, highLighted.cellHighLights, turn)
+        turn *= -1
+        if(!moved) {
+            message.textContent = "Sorry, can't move there"
+        } else {
+            if(typeof moved === 'number') {
+                turn = updateBoard(turn, highLighted.playerHighLights, highLighted.cellHighLights, moved)
+                moveUtility({message, turn}, {toggleTurn: true})
+            } else {
+                moveUtility({message, turn}, {toggleTurn: true})
+                updateBoard(turn, highLighted.playerHighLights, highLighted.cellHighLights)
+            }
+        }
 
-        highLighted.cell = !highLighted.cell
-        highLighted.cellHighLights.pop()
+        moveUtility({e, highLighted, message}, {removeHighlight: true, flipPlayer: true, popPlayer: true})
+
+        moveUtility({e, highLighted, message}, {flipCell: true, popCell: true})
+        
+    } else if (highLighted.player && e.target === highLighted.playerHighLights[0]) {
+
+        moveUtility({e, highLighted, message, turn}, {toggleTurn: true, removeHighlight: true, flipPlayer: true, popPlayer: true})
 
     }
 }
