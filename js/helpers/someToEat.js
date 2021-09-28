@@ -1,9 +1,8 @@
-const { board, cells } = require('../vars/vars')
-
 const someToEat = (cellsArr, flatBoard, player) => {
     let found = false
     const targetCells = [cellsArr[cellsArr.indexOf(player[0]) + 22], cellsArr[cellsArr.indexOf(player[0]) + 18], cellsArr[cellsArr.indexOf(player[0]) - 22], cellsArr[cellsArr.indexOf(player[0]) - 18]]
     const targetPieces = [cellsArr[cellsArr.indexOf(player[0]) + 11], cellsArr[cellsArr.indexOf(player[0]) + 9], cellsArr[cellsArr.indexOf(player[0]) - 11], cellsArr[cellsArr.indexOf(player[0]) - 9]]
+
     targetPieces.forEach((target, id) => {
         switch(id) {
             case 0:
@@ -36,6 +35,7 @@ const someToEat = (cellsArr, flatBoard, player) => {
                 break;
         }
     })
+    
     return found
 }
 
