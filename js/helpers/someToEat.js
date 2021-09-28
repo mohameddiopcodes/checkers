@@ -8,28 +8,28 @@ const someToEat = (cellsArr, flatBoard, player) => {
         switch(id) {
             case 0:
                 if(flatBoard[(cellsArr.indexOf(player[0])+11)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[0])] === 0 && flatBoard[cellsArr.indexOf(targetCells[0])] != -1) {
+                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[0])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
                         found = true
                     }
                 }
                 break;
             case 1:
                 if(flatBoard[(cellsArr.indexOf(player[0])+9)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[1])] === 0 && flatBoard[cellsArr.indexOf(targetCells[1])] != -1) {
+                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[1])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
                         found = true
                     }
                 }
                 break;
             case 2:
                 if(flatBoard[(cellsArr.indexOf(player[0])-11)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[2])] === 0&& flatBoard[cellsArr.indexOf(targetCells[2])] != -1) {
+                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[2])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
                         found = true
                     }
                 }
                 break;
             case 3:
                 if(flatBoard[(cellsArr.indexOf(player[0])-9)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[3])] === 0 && flatBoard[cellsArr.indexOf(targetCells[3])]  != -1) {
+                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[3])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
                         found = true
                     }
                 }

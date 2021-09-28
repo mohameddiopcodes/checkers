@@ -22,6 +22,7 @@ const animateBoard = function(e) {
         turn *= -1
         if(!moved) {
             message.textContent = "Sorry, can't move there"
+            turn *= -1
         } else {
             if(typeof moved === 'number') {
                 turn = updateBoard(turn, highLighted.playerHighLights, highLighted.cellHighLights, moved)

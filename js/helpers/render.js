@@ -1,12 +1,14 @@
 const renderCells = require('./renderCells')
 const animateBoard = require('./animateBoard')
 const makeKing = require('./makeKing')
-const { cells, evenPlayableCells, oddPlayableCells } = require('../vars/vars')
+const { cells } = require('../vars/vars');
+const checkWin = require('./checkWin');
 
 const render = (e = false, cellId) => {
     if(e) {
         animateBoard(e)
         makeKing(e)
+        checkWin()
     } else {
         renderCells(cells)
     }

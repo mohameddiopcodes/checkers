@@ -1,4 +1,4 @@
-const {message, cells, board, flatBoard} = require('../vars/vars')
+const {cells, board, flatBoard} = require('../vars/vars')
 const someToEat = require('./someToEat')
 
 const updateBoard = (turn, player, cell, moved = false) => {

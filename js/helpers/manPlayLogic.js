@@ -1,6 +1,6 @@
 const { board, cells } = require('../vars/vars')
 const movePiece = require('./movePiece')
-
+const isWhitePiece = require('./isWhitePiece')
 
 const manPlayLogic = (cellsArr, cell, player, turn) => {
     let i = 0
@@ -13,7 +13,7 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
         const nextArr = [cellsArr[n], cellsArr[n+1], cellsArr[n+2], cellsArr[n+3], cellsArr[n+4], cellsArr[n+5], cellsArr[n+6], cellsArr[n+7], cellsArr[n+8], cellsArr[n+9]]
 
         if(nextArr.indexOf(cell[0]) > -1 || prevArr.indexOf(cell[0]) > -1) {
-            const isPlayableCell = nextArr.includes(cell[0]) ? ((nextArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (nextArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement)) : ((prevArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (prevArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement))
+            const isPlayableCell = isWhitePiece(player[0]) ? ((nextArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (nextArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement)) : ((prevArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (prevArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement))
             if(arr.includes(player[0].parentElement) && isPlayableCell) {
                 movePiece(player, cell)
                 return isPlayableCell
@@ -28,7 +28,6 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
             if(nextArr2.indexOf(cell[0]) > -1 || prevArr2.indexOf(cell[0]) > -1) {
                 if(arr.includes(player[0].parentElement) && isPlayableCell) {
                     
-                    console.log(i-1, arr.indexOf(player[0].parentElement)-1, arr.indexOf(player[0].parentElement)+1, i,  i+1)
                     if(i != 9 && board[i+1][arr.indexOf(player[0].parentElement)+1] === -1*turn && (nextArr2[arr.indexOf(player[0].parentElement)+2] === cell[0])) {
                         const capturedPieceId = parseInt((i+1).toString() + (arr.indexOf(player[0].parentElement)+1).toString())
                         cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'
