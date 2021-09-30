@@ -1,4 +1,4 @@
-const { board, cells, diagonal1, diagonal2 } = require('../vars/vars')
+const { board, flatBoard, cells, diagonal1, diagonal2 } = require('../vars/vars')
 const movePiece = require('./movePiece')
 const isWhitePiece = require('./isWhitePiece')
 const isKing = require('./isKing')
@@ -67,22 +67,83 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
         }     
     } else {
         let moved = false
+        const ennemies = []
         diagonal1.forEach(arr => {
-            if(arr.includes(cellsArr.indexOf(player[0].parentElement))) {
-                arr.forEach(id => {
-                    if(cell[0] === cellsArr[id]) {
-                        movePiece(player, cell)
-                        moved = true
+            if(arr.includes(cellsArr.indexOf(player[0].parentElement)) && arr.includes(cellsArr.indexOf(cell[0]))) {
+                arr.forEach((id) => {
+                    if(flatBoard[id] === -1*turn && id > cellsArr.indexOf(cell[0]) && id < cellsArr.indexOf(player[0].parentElement)){
+
+                        let path = arr.filter(item => item >= cellsArr.indexOf(cell[0]) && item < cellsArr.indexOf(player[0].parentElement))
+                        path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = id
+                            cells[id].childNodes[0].style.visibility = 'hidden'
+                            movePiece(player, cell)
+                        }
+
+                    } else if(flatBoard[id] === -1*turn && id < cellsArr.indexOf(cell[0]) && id > cellsArr.indexOf(player[0].parentElement)) {
+
+                        let path = arr.filter(item => item > cellsArr.indexOf(player[0].parentElement) && item <= cellsArr.indexOf(cell[0]))
+                        path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = id
+                            cells[id].childNodes[0].style.visibility = 'hidden'
+                            movePiece(player, cell)
+                        }
+                    } else if (cellsArr.indexOf(cell[0]) > cellsArr.indexOf(player[0].parentElement)) {
+                        let path = arr.filter(item => item > cellsArr.indexOf(player[0].parentElement) && item <= cellsArr.indexOf(cell[0]))
+                        path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = true
+                            movePiece(player, cell)
+                        }
+                    } else if (cellsArr.indexOf(player[0].parentElement) > cellsArr.indexOf(cell[0])) {
+                        let path = arr.filter(item => item >= cellsArr.indexOf(cell[0]) && item < cellsArr.indexOf(player[0].parentElement))
+                        path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = true
+                            movePiece(player, cell)
+                        }
                     }
                 })
             }
         })
         diagonal2.forEach(arr => {
-            if(arr.includes(cellsArr.indexOf(player[0].parentElement))) {
-                arr.forEach(id => {
-                    if(cell[0] === cellsArr[id]) {
-                        movePiece(player, cell)
-                        moved = true
+            if(arr.includes(cellsArr.indexOf(player[0].parentElement)) && arr.includes(cellsArr.indexOf(cell[0]))) {
+                arr.forEach((id) => {
+                    if(flatBoard[id] === -1*turn && id > cellsArr.indexOf(cell[0]) && id < cellsArr.indexOf(player[0].parentElement)){
+
+                        let path = arr.filter(item => item >= cellsArr.indexOf(cell[0]) && item < cellsArr.indexOf(player[0].parentElement))
+                        path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = id
+                            cells[id].childNodes[0].style.visibility = 'hidden'
+                            movePiece(player, cell)
+                        }
+
+                    } else if(flatBoard[id] === -1*turn && id < cellsArr.indexOf(cell[0]) && id > cellsArr.indexOf(player[0].parentElement)) {
+
+                        let path = arr.filter(item => item > cellsArr.indexOf(player[0].parentElement) && item <= cellsArr.indexOf(cell[0]))
+                        path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = id
+                            cells[id].childNodes[0].style.visibility = 'hidden'
+                            movePiece(player, cell)
+                        }
+                    } else if (cellsArr.indexOf(cell[0]) > cellsArr.indexOf(player[0].parentElement)) {
+                        let path = arr.filter(item => item > cellsArr.indexOf(player[0].parentElement) && item <= cellsArr.indexOf(cell[0]))
+                        path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = true
+                            movePiece(player, cell)
+                        }
+                    } else if (cellsArr.indexOf(player[0].parentElement) > cellsArr.indexOf(cell[0])) {
+                        let path = arr.filter(item => item >= cellsArr.indexOf(cell[0]) && item < cellsArr.indexOf(player[0].parentElement))
+                        path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
+                        if(path.filter(item => flatBoard[item] === 0).length === path.length) {
+                            moved = true
+                            movePiece(player, cell)
+                        }
                     }
                 })
             }

@@ -1,5 +1,6 @@
 const {cells, board, flatBoard} = require('../vars/vars')
 const someToEat = require('./someToEat')
+const isKing = require('./isKing')
 
 const updateBoard = (turn, player, cell, moved = false) => {
     const cellsArr = [...cells]
@@ -19,7 +20,7 @@ const updateBoard = (turn, player, cell, moved = false) => {
         j += 10
     }
 
-    if(someToEat(cellsArr, flatBoard, cell, turn)) {
+    if(someToEat(cellsArr, flatBoard, cell, -1*turn, isKing(player))) {
         turn *= -1
     }
     return turn

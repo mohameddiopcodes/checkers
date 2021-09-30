@@ -1,41 +1,64 @@
-const someToEat = (cellsArr, flatBoard, player) => {
-    let found = false
-    const targetCells = [cellsArr[cellsArr.indexOf(player[0]) + 22], cellsArr[cellsArr.indexOf(player[0]) + 18], cellsArr[cellsArr.indexOf(player[0]) - 22], cellsArr[cellsArr.indexOf(player[0]) - 18]]
-    const targetPieces = [cellsArr[cellsArr.indexOf(player[0]) + 11], cellsArr[cellsArr.indexOf(player[0]) + 9], cellsArr[cellsArr.indexOf(player[0]) - 11], cellsArr[cellsArr.indexOf(player[0]) - 9]]
+const {diagonal1, diagonal2} = require('../vars/vars')
 
-    targetPieces.forEach((target, id) => {
-        switch(id) {
-            case 0:
-                if(flatBoard[(cellsArr.indexOf(player[0])+11)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[0])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
+const someToEat = (cellsArr, flatBoard, player, turn, isKing) => {
+    let afterEnnemy = []
+    let beforeEnnemy = []
+    let found = false
+
+    diagonal1.forEach(arr => {
+        if(arr.includes(cellsArr.indexOf(player[0]))) {
+
+            arr.forEach((id) => {
+                if(flatBoard[id] === -1*turn && id < cellsArr.indexOf(player[0])){
+                    afterEnnemy = arr.filter(item => item < id)
+                    beforeEnnemy = arr.filter(item => item > id && item < cellsArr.indexOf(player[0]))
+                    
+                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    }
+
+                } else if(flatBoard[id] === -1*turn && id > cellsArr.indexOf(player[0])) {
+                    afterEnnemy = arr.filter(item => item > id)
+                    beforeEnnemy = arr.filter(item => item < id && item > cellsArr.indexOf(player[0]))
+
+                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
                         found = true
                     }
                 }
-                break;
-            case 1:
-                if(flatBoard[(cellsArr.indexOf(player[0])+9)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[1])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
-                        found = true
-                    }
-                }
-                break;
-            case 2:
-                if(flatBoard[(cellsArr.indexOf(player[0])-11)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[2])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
-                        found = true
-                    }
-                }
-                break;
-            case 3:
-                if(flatBoard[(cellsArr.indexOf(player[0])-9)] != 0) {
-                    if(flatBoard[cellsArr.indexOf(player[0])] === -1* flatBoard[cellsArr.indexOf(target)] && flatBoard[cellsArr.indexOf(targetCells[3])] === 0 && cellsArr.indexOf(target)%10 != 0 && cellsArr.indexOf(target)%10 != 9) {
-                        found = true
-                    }
-                }
-                break;
+            })
         }
     })
-    
+    diagonal2.forEach(arr => {
+        if(arr.includes(cellsArr.indexOf(player[0]))) {
+
+            arr.forEach((id) => {
+                if(flatBoard[id] === -1*turn && id < cellsArr.indexOf(player[0])){
+                    afterEnnemy = arr.filter(item => item < id)
+                    beforeEnnemy = arr.filter(item => item > id && item < cellsArr.indexOf(player[0]))
+                    
+                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    }
+
+                } else if(flatBoard[id] === -1*turn && id > cellsArr.indexOf(player[0])) {
+                    afterEnnemy = arr.filter(item => item > id)
+                    beforeEnnemy = arr.filter(item => item < id && item > cellsArr.indexOf(player[0]))
+
+                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
+                        found = true
+                    }
+                }
+            })
+        }
+    })
     return found
 }
 

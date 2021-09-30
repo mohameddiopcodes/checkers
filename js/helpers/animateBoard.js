@@ -1,11 +1,13 @@
 const isChip = require('./isChip')
 const updateBoard = require('./updateBoard')
 const move = require('./move')
-let {highLighted, message, turn} = require('../vars/vars')
+let {cells, highLighted, flatBoard, message, turn} = require('../vars/vars')
 const isWhitePiece = require('./isWhitePiece')
 const moveUtility = require('./moveUtility')
 
 const animateBoard = function(e) {
+    const cellsArr = [...cells]
+
     if(turn === 1 && !highLighted.player && isChip(e) && isWhitePiece(e.target) && !highLighted.playerHighLights.length) {
 
         moveUtility({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})
