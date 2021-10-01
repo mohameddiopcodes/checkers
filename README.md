@@ -12,7 +12,7 @@ a **10x10** board game. The rules are simple :
 
 ## Screenshots
 
-<img src='./css/images/screenshots.PNG>
+<img src='./css/images/screenshots.PNG'>
 
 ## Technologies Used
 
