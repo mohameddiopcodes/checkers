@@ -9,10 +9,11 @@ const someToEat = require('./someToEat')
 const isKing = require('./isKing')
 
 const animateBoard = function(e) {
-    const cellsArr = [...cells]
-    const capture = e.target.src? someToEat(cellsArr, flatBoard, [e.target.parentElement], turn, isKing([e.target])): false    
+    const cellsArr = [...cells]  
     
-    if(turn === 1 && !highLighted.player && isChip(e) && isWhitePiece(e.target) && !highLighted.playerHighLights.length) {
+    if(!highLighted.player && isChip(e) && !highLighted.playerHighLights.length) {
+        const capture = e.target.src? someToEat(cellsArr, flatBoard, [e.target.parentElement], turn, isKing([e.target])): false  
+
         highLighted.capture = capture
 
         if(capture) {
@@ -21,15 +22,6 @@ const animateBoard = function(e) {
             utilities({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})
         }
         
-        
-    } else if(turn === -1 && !highLighted.player && isChip(e) && !isWhitePiece(e.target) && !highLighted.playerHighLights.length) {
-
-        if(capture) {
-            utilities({e, highLighted, message}, {displayMessage: 'Capture your opponent', setHighlight: true, flipPlayer: true, pushPlayer: true})   
-        } else {
-            utilities({e, highLighted, message}, {displayMessage: 'Make a move', setHighlight: true, flipPlayer: true, pushPlayer: true})
-        }
-
     } else if (highLighted.player && !highLighted.cell && !isChip(e) && !highLighted.cellHighLights.length) {
 
         utilities({e, highLighted, message}, {displayMessage: 'Make a move', flipCell: true, pushCell: true})
