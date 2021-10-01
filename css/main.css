@@ -9,6 +9,14 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+img {
+    -webkit-user-drag: none;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+}
+
 h1 {
     margin-bottom: 3vmin;
     text-align: center;
