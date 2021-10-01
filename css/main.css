@@ -33,11 +33,14 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
-    outline: none
+}
+
+.row > div, button {
+    -webkit-tap-highlight-color: transparent;
 }
 
 .row > div:focus, button:focus {
-    outline: none
+    -webkit-tap-highlight-color: transparent;
 }
 
 div img {
