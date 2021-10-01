@@ -29,13 +29,23 @@ eval("let { message, flatBoard } = __webpack_require__(/*! ../vars/vars */ \"./j
 
 /***/ }),
 
+/***/ "./js/helpers/darkMode.js":
+/*!********************************!*\
+  !*** ./js/helpers/darkMode.js ***!
+  \********************************/
+/***/ ((module) => {
+
+eval("let darkMode = false\n\nconst mode = () => {\n\n    document.querySelector('.bg').addEventListener('click', (e) => {\n\n        if(!darkMode) {\n            const body = document.querySelector('body')\n            body.style.background = 'black'\n            body.style.color = \"white\"\n            e.target.style.background = \"black\"\n            e.target.style.color = \"white\"\n        } else {\n            const body = document.querySelector('body')\n            body.style.background = 'white'\n            body.style.color = \"black\"\n            e.target.style.background = \"white\"\n            e.target.style.color = \"black\"\n        }\n    \n        darkMode = !darkMode\n    \n    })\n    \n\n}\n\nmodule.exports = mode\n\n//# sourceURL=webpack:///./js/helpers/darkMode.js?");
+
+/***/ }),
+
 /***/ "./js/helpers/init.js":
 /*!****************************!*\
   !*** ./js/helpers/init.js ***!
   \****************************/
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const render = __webpack_require__(/*! ./render */ \"./js/helpers/render.js\")\nconst resetGame = __webpack_require__(/*! ./resetGame */ \"./js/helpers/resetGame.js\")\nconst { playableCells, flatBoard } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst init = () => {\n    render(false, flatBoard)\n\n    playableCells.forEach((cell, id) => {\n        cell.addEventListener('click', e => { render(e, id) })\n    })\n    document.querySelector('button').addEventListener('click', resetGame)\n}\n\nmodule.exports = init\n\n//# sourceURL=webpack:///./js/helpers/init.js?");
+eval("const render = __webpack_require__(/*! ./render */ \"./js/helpers/render.js\")\nconst resetGame = __webpack_require__(/*! ./resetGame */ \"./js/helpers/resetGame.js\")\nconst darkMode = __webpack_require__(/*! ./darkMode */ \"./js/helpers/darkMode.js\")\nconst { playableCells, flatBoard } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.js\")\n\nconst init = () => {\n    render(false, flatBoard)\n    darkMode()\n\n    playableCells.forEach((cell, id) => {\n        cell.addEventListener('click', e => { render(e, id) })\n    })\n    document.querySelector('button').addEventListener('click', resetGame)\n}\n\nmodule.exports = init\n\n//# sourceURL=webpack:///./js/helpers/init.js?");
 
 /***/ }),
 
@@ -175,7 +185,7 @@ eval("let { cells } = __webpack_require__(/*! ../vars/vars */ \"./js/vars/vars.j
   \********************/
 /***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-eval("const init = __webpack_require__(/*! ./helpers/init */ \"./js/helpers/init.js\")\n\n//_____initializing game\ninit();\n\n\n\n//# sourceURL=webpack:///./js/main.js?");
+eval("const init = __webpack_require__(/*! ./helpers/init */ \"./js/helpers/init.js\")\n\n//_____initializing game\ninit();\n\n//# sourceURL=webpack:///./js/main.js?");
 
 /***/ }),
 

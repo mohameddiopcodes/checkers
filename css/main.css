@@ -9,6 +9,20 @@ body {
     font-family: 'Open Sans', sans-serif;
 }
 
+.board {
+    box-shadow: 40px 40px 40px rgba(0,0,0,0.5)
+}
+
+.bg {
+    border: 0;
+    background: white;
+    top: 5vh;
+    right: 5vh;
+    font-size: 0.8em;
+    line-height: 50px;
+    text-decoration: underline;
+}
+
 img {
     -webkit-user-drag: none;
     user-select: none;
