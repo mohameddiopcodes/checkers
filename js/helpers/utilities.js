@@ -1,4 +1,6 @@
-const moveUtility = ({e, highLighted, turn, message}, {displayMessage, toggleTurn, setHighlight, removeHighlight, flipPlayer, flipCell, flipTurn, pushPlayer, popPlayer, pushCell, popCell}) => {
+let { cells } = require('../vars/vars')
+
+const utilities = ({e, highLighted, turn, message}, {displayMessage, toggleTurn, setHighlight, removeHighlight, flipPlayer, flipCell, pushPlayer, popPlayer, pushCell, popCell, endGame}) => {
     if(displayMessage) {
         message.textContent = displayMessage
     }
@@ -29,6 +31,12 @@ const moveUtility = ({e, highLighted, turn, message}, {displayMessage, toggleTur
    if(popCell) {
         highLighted.cellHighLights.pop()
    }
+   if(endGame) {
+      document.querySelector('button').style.visibility = 'visible'
+      cells.forEach(cell => {
+          cell.style.pointerEvents = 'none';
+      })
+   }
 }
 
-module.exports = moveUtility
+module.exports = utilities

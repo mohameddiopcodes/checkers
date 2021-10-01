@@ -11,6 +11,8 @@ body {
 
 h1 {
     margin-bottom: 3vmin;
+    text-align: center;
+    font-size: 1.7em
 }
 
 .row {
@@ -85,3 +87,30 @@ div img {
 .row:nth-child(2n+1) > div:nth-child(2n+1) {
     background: url('images/walltexture.jpeg');
 }
+
+button {
+    border: 3px solid black;
+    border-radius: 5px;
+    padding: 1em 2em;
+    margin: 4vh;
+    font-size: 1em;
+    background-color: white;
+    visibility: hidden;
+}
+
+button:hover {
+    background-color: black;
+    color: white;
+}
+
+@media (orientation: portrait) {
+    body {
+      overflow-y: hidden
+    }
+}
+
+@media only screen and (max-width: 800px) {
+    h1 {
+      font-size: 1.2em
+    }
+  }

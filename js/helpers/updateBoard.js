@@ -1,4 +1,4 @@
-const {cells, board, flatBoard} = require('../vars/vars')
+const {cells, board, flatBoard } = require('../vars/vars')
 const someToEat = require('./someToEat')
 const isKing = require('./isKing')
 

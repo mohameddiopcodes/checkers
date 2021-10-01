@@ -14,20 +14,21 @@ const someToEat = (cellsArr, flatBoard, player, turn, isKing) => {
                     beforeEnnemy = arr.filter(item => item > id && item < cellsArr.indexOf(player[0]))
                     
                     if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
+                        found = id
                     } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
+                        found = id
                     }
-
+                    
                 } else if(flatBoard[id] === -1*turn && id > cellsArr.indexOf(player[0])) {
                     afterEnnemy = arr.filter(item => item > id)
                     beforeEnnemy = arr.filter(item => item < id && item > cellsArr.indexOf(player[0]))
 
-                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
-                    } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
+                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[0]] === 0) {
+                        found = id
+                    } else if(isKing && flatBoard[afterEnnemy[0]] === 0) {
+                        found = id
                     }
+                    
                 }
             })
         }
@@ -41,20 +42,21 @@ const someToEat = (cellsArr, flatBoard, player, turn, isKing) => {
                     beforeEnnemy = arr.filter(item => item > id && item < cellsArr.indexOf(player[0]))
                     
                     if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
+                        found = id
                     } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
+                        found = id
                     }
-
+                    
                 } else if(flatBoard[id] === -1*turn && id > cellsArr.indexOf(player[0])) {
                     afterEnnemy = arr.filter(item => item > id)
                     beforeEnnemy = arr.filter(item => item < id && item > cellsArr.indexOf(player[0]))
 
-                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
-                    } else if(isKing && flatBoard[afterEnnemy[afterEnnemy.length - 1]] === 0) {
-                        found = true
+                    if(!isKing && beforeEnnemy.length === 0 && flatBoard[afterEnnemy[0]] === 0) {
+                        found = id
+                    } else if(isKing && flatBoard[afterEnnemy[0]] === 0) {
+                        found = id
                     }
+                    
                 }
             })
         }

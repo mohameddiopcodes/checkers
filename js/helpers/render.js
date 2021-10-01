@@ -4,7 +4,7 @@ const makeKing = require('./makeKing')
 const { cells } = require('../vars/vars');
 const checkWin = require('./checkWin');
 
-const render = (e = false, cellId) => {
+const render = (e = false) => {
     if(e) {
         animateBoard(e)
         makeKing(e)

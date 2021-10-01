@@ -1,9 +1,8 @@
-const { board, flatBoard, cells, diagonal1, diagonal2 } = require('../vars/vars')
-const movePiece = require('./movePiece')
+const { board, flatBoard, diagonal1, diagonal2 } = require('../vars/vars')
 const isWhitePiece = require('./isWhitePiece')
 const isKing = require('./isKing')
 
-const manPlayLogic = (cellsArr, cell, player, turn) => {
+const playLogic = (cellsArr, cell, player, turn) => {
 
     let i = 0
     let j = 0
@@ -20,7 +19,7 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
             if((nextArr.indexOf(cell[0]) > -1 || prevArr.indexOf(cell[0]) > -1)) {
                 const isPlayableCell = isWhitePiece(player[0]) ? ((nextArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (nextArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement)) : ((prevArr.indexOf(cell[0])+1)%10 === arr.indexOf(player[0].parentElement) || (prevArr.indexOf(cell[0])-1)%10 === arr.indexOf(player[0].parentElement))
                 if(arr.includes(player[0].parentElement) && isPlayableCell) {
-                    movePiece(player, cell)
+                    
                     return isPlayableCell
                 }
             } else {
@@ -35,26 +34,22 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
                         
                         if(i != 9 && board[i+1][arr.indexOf(player[0].parentElement)+1] === -1*turn && (nextArr2[arr.indexOf(player[0].parentElement)+2] === cell[0])) {
                             const capturedPieceId = parseInt((i+1).toString() + (arr.indexOf(player[0].parentElement)+1).toString())
-                            cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                             return capturedPieceId
     
                         } else if (i != 9 && board[i+1][arr.indexOf(player[0].parentElement)-1] === -1*turn && (nextArr2[arr.indexOf(player[0].parentElement)-2] === cell[0])) {
                             const capturedPieceId = parseInt((i+1).toString() + (arr.indexOf(player[0].parentElement)-1).toString())
-                            cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                             return capturedPieceId
     
                         } else if (i != 0 && board[i-1][arr.indexOf(player[0].parentElement)+1] === -1*turn && (prevArr2[arr.indexOf(player[0].parentElement)+2] === cell[0])) {
                             const capturedPieceId = parseInt((i-1).toString() + (arr.indexOf(player[0].parentElement)+1).toString())
-                            cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                             return capturedPieceId
     
                         }  else if (i != 0 && board[i-1][arr.indexOf(player[0].parentElement)-1] === -1*turn && (prevArr2[arr.indexOf(player[0].parentElement)-2] === cell[0])) {
                             const capturedPieceId = parseInt((i-1).toString() + (arr.indexOf(player[0].parentElement)-1).toString())
-                            cells[capturedPieceId].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                             return capturedPieceId
     
                         }
@@ -77,8 +72,7 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
                         path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = id
-                            cells[id].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                         }
 
                     } else if(flatBoard[id] === -1*turn && id < cellsArr.indexOf(cell[0]) && id > cellsArr.indexOf(player[0].parentElement)) {
@@ -87,22 +81,21 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
                         path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = id
-                            cells[id].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                         }
                     } else if (cellsArr.indexOf(cell[0]) > cellsArr.indexOf(player[0].parentElement)) {
                         let path = arr.filter(item => item > cellsArr.indexOf(player[0].parentElement) && item <= cellsArr.indexOf(cell[0]))
                         path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = true
-                            movePiece(player, cell)
+                            
                         }
                     } else if (cellsArr.indexOf(player[0].parentElement) > cellsArr.indexOf(cell[0])) {
                         let path = arr.filter(item => item >= cellsArr.indexOf(cell[0]) && item < cellsArr.indexOf(player[0].parentElement))
                         path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = true
-                            movePiece(player, cell)
+                            
                         }
                     }
                 })
@@ -117,8 +110,7 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
                         path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = id
-                            cells[id].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                         }
 
                     } else if(flatBoard[id] === -1*turn && id < cellsArr.indexOf(cell[0]) && id > cellsArr.indexOf(player[0].parentElement)) {
@@ -127,22 +119,21 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
                         path = path.filter(item => ![cellsArr.indexOf(player[0].parentElement), id].includes(item))
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = id
-                            cells[id].childNodes[0].style.visibility = 'hidden'
-                            movePiece(player, cell)
+                            
                         }
                     } else if (cellsArr.indexOf(cell[0]) > cellsArr.indexOf(player[0].parentElement)) {
                         let path = arr.filter(item => item > cellsArr.indexOf(player[0].parentElement) && item <= cellsArr.indexOf(cell[0]))
                         path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = true
-                            movePiece(player, cell)
+                            
                         }
                     } else if (cellsArr.indexOf(player[0].parentElement) > cellsArr.indexOf(cell[0])) {
                         let path = arr.filter(item => item >= cellsArr.indexOf(cell[0]) && item < cellsArr.indexOf(player[0].parentElement))
                         path = path.filter(item => cellsArr.indexOf(player[0].parentElement) != item)
                         if(path.filter(item => flatBoard[item] === 0).length === path.length) {
                             moved = true
-                            movePiece(player, cell)
+                            
                         }
                     }
                 })
@@ -152,4 +143,4 @@ const manPlayLogic = (cellsArr, cell, player, turn) => {
     }
 }
 
-module.exports = manPlayLogic
+module.exports = playLogic
