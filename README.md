@@ -1,5 +1,3 @@
-<img src='./css/images/readmeimg.JPG'>
-
 ## INTERNATIONAL CHECKERS
 
 a **10x10** board game. The rules are simple :
