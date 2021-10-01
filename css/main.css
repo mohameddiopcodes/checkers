@@ -33,6 +33,11 @@ h1 {
     display: flex;
     justify-content: center;
     align-items: center;
+    outline: none
+}
+
+.row > div:focus, button:focus {
+    outline: none
 }
 
 div img {
