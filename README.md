@@ -20,7 +20,7 @@ a **10x10** board game. The rules are simple :
 
 ## Getting Started
 
-You can play the game right now using this [link] (https://mohameddiopcodes.github.io/checkers/)
+You can play the game right now using this [link](https://mohameddiopcodes.github.io/checkers/)
 
 ## Future Improvements
 
